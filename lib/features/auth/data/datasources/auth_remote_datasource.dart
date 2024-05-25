@@ -1,6 +1,5 @@
 import 'package:api_clean_arch/core/error/exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 abstract interface class AuthRemoteDataSource {
   Future<String> signUpWithEmailPassword({
@@ -17,13 +16,25 @@ abstract interface class AuthRemoteDataSource {
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FirebaseAuth firebaseAuth;
   AuthRemoteDataSourceImpl(this.firebaseAuth);
+  User? get currentUserSession => firebaseAuth.currentUser;
   @override
   Future<String> loginWithEmailPassword({
     required String email,
     required String password,
-  }) {
-    // TODO: implement loginWithEmailPassword
-    throw UnimplementedError();
+  }) async {
+    try {
+      UserCredential response = await firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (response.user == null) {
+        throw ServerException("User is null");
+      }
+      return response.user!.uid;
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
   }
 
   @override
@@ -38,7 +49,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         email: email,
         password: password,
       );
-      // Update the display name
       await response.user!.updateDisplayName(name);
 
       if (response.user == null) {

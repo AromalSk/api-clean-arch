@@ -1,7 +1,9 @@
 import 'package:api_clean_arch/core/theme/theme.dart';
 import 'package:api_clean_arch/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:api_clean_arch/features/auth/presentation/pages/homepage.dart';
 import 'package:api_clean_arch/features/auth/presentation/pages/login_page.dart';
 import 'package:api_clean_arch/init_dependencies.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,6 +29,14 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: AppTheme.darkThemeMode,
-        home: LoginPage());
+        home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Home();
+              } else {
+                return LoginPage();
+              }
+            }));
   }
 }

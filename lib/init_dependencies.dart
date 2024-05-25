@@ -1,6 +1,7 @@
 import 'package:api_clean_arch/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:api_clean_arch/features/auth/data/repositories/auth_repo_impl.dart';
 import 'package:api_clean_arch/features/auth/domain/repository/auth_repository.dart';
+import 'package:api_clean_arch/features/auth/domain/usecases/user_login.dart';
 import 'package:api_clean_arch/features/auth/domain/usecases/user_signup.dart';
 import 'package:api_clean_arch/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,7 +25,8 @@ void _initAuth() {
       () => AuthRepositoryImpl(serviceLocator()));
 
   serviceLocator.registerFactory(() => UserSignUp(serviceLocator()));
+  serviceLocator.registerFactory(() => UserLogin(serviceLocator()));
 
-  serviceLocator
-      .registerLazySingleton(() => AuthBloc(userSignUp: serviceLocator()));
+  serviceLocator.registerLazySingleton(() =>
+      AuthBloc(userSignUp: serviceLocator(), userLogin: serviceLocator()));
 }
