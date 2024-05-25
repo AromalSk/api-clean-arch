@@ -2,10 +2,10 @@ import 'package:api_clean_arch/core/common/widgets/loader.dart';
 import 'package:api_clean_arch/core/theme/app_pallete.dart';
 import 'package:api_clean_arch/core/utils/show_snackbar.dart';
 import 'package:api_clean_arch/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:api_clean_arch/features/auth/presentation/pages/homepage.dart';
 import 'package:api_clean_arch/features/auth/presentation/pages/signup_page.dart';
 import 'package:api_clean_arch/features/auth/presentation/widgets/auth_field.dart';
 import 'package:api_clean_arch/features/auth/presentation/widgets/auth_gradient_button.dart';
+import 'package:api_clean_arch/features/cats/presentation/pages/cats_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,7 +26,6 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
-
     super.dispose();
   }
 
@@ -44,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                 showSnackBar(context, "User Logged In");
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) {
-                    return Home();
+                    return CatsGridPage();
                   },
                 ));
               }
@@ -59,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 150,
                       ),
                       const Text(
